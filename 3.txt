@@ -1,0 +1,7 @@
+def generate_reflection(state):
+    if state == "confused":
+        return "🤔 آیا این احساس واقعاً متعلق به الآن است یا بازمانده از گذشته؟"
+    elif state == "empowered":
+        return "💡 در همین لحظه، ذهن تو در حال ساخت آینده‌ات است. ادامه بده."
+    else:
+        return "🌿 مکث کن. سکوت کن. و بذار ذهن خودش مسیرش رو نشون بده."

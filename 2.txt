@@ -1,0 +1,8 @@
+def analyze_emotion(text):
+    text = text.lower()
+    if any(w in text for w in ["ترس", "شک", "اضطراب", "نگرانی"]):
+        return "confused"
+    elif any(w in text for w in ["قدرت", "امید", "انگیزه", "روشن", "وضوح"]):
+        return "empowered"
+    else:
+        return "neutral"

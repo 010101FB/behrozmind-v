@@ -1,0 +1,7 @@
+import json
+from datetime import datetime
+
+def save_log(data):
+    data["timestamp"] = datetime.now().isoformat()
+    with open("journal.log", "a", encoding="utf-8") as f:
+        f.write(json.dumps(data, ensure_ascii=False) + "\n")

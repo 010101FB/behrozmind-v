@@ -1,0 +1,32 @@
+import streamlit as st
+from emotional_parser import analyze_emotion
+from reflection_engine import generate_reflection
+from log_handler import save_log
+
+st.set_page_config(page_title="BehruzMind v1", layout="centered")
+st.title("🧠 دفتر آگاهی دیجیتال – BehruzMind v1")
+
+with st.form("mind_form"):
+    thought = st.text_area("📝 فکر امروزت:", height=100)
+    exercise = st.text_input("🧘‍♂️ تمرینی که انجام دادی:")
+    insight = st.text_input("🪞 چه چیزی فهمیدی؟")
+    emotion = st.text_input("🌀 حالت غالب امروز با یک کلمه:")
+
+    submitted = st.form_submit_button("📩 ثبت و دریافت بازتاب")
+
+    if submitted:
+        state = analyze_emotion(thought + " " + insight)
+        reflection = generate_reflection(state)
+        
+        save_log({
+            "thought": thought,
+            "exercise": exercise,
+            "insight": insight,
+            "emotion": emotion,
+            "state": state,
+            "reflection": reflection
+        })
+
+        st.success("✅ ثبت شد در journal.log")
+        st.markdown(f"### 📊 وضعیت ذهن: `{state}`")
+        st.markdown(f"### 🔁 بازتاب: *{reflection}*")
