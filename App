@@ -1,0 +1,46 @@
+import streamlit as st
+from emotional_parser import analyze_emotion
+from reflection_engine import generate_reflection
+from log_handler import save_log
+
+st.set_page_config(
+    page_title="BehruzMind v1 - دفتر آگاهی دیجیتال",
+    page_icon="🧠",
+    layout="centered",
+)
+
+st.markdown("<h1 style='text-align: center;'>🧠 BehruzMind v1</h1>", unsafe_allow_html=True)
+st.markdown("<h4 style='text-align: center;'>دفتر خودبازتابی، ذهن‌آگاهی و تحلیل درون</h4>", unsafe_allow_html=True)
+st.divider()
+
+with st.form("mind_entry"):
+    st.subheader("📝 یادداشت ذهنی")
+    thought = st.text_area("چی تو ذهنت می‌گذره امروز؟", height=100, placeholder="مثلاً: امروز خیلی پریشون بودم چون...")
+    
+    st.subheader("🧘 تمرین ذهن‌آگاهی")
+    exercise = st.text_input("چه تمرینی انجام دادی؟", placeholder="مثلاً: تنفس عمیق، مراقبه، پیاده‌روی")
+
+    st.subheader("🪞 بینش یا درک امروزت")
+    insight = st.text_input("چه چیزی فهمیدی یا یاد گرفتی؟")
+
+    st.subheader("🌈 احساس غالب امروز")
+    emotion = st.text_input("احساست رو با یک کلمه توصیف کن", placeholder="مثلاً: اضطراب، قدرت، سردرگمی...")
+
+    submitted = st.form_submit_button("📩 ثبت و دریافت بازتاب")
+
+if submitted:
+    state = analyze_emotion(thought + " " + insight + " " + emotion)
+    reflection = generate_reflection(state)
+    
+    save_log({
+        "thought": thought,
+        "exercise": exercise,
+        "insight": insight,
+        "emotion": emotion,
+        "state": state,
+        "reflection": reflection
+    })
+
+    st.success("✅ یادداشت ذخیره شد.")
+    st.markdown(f"### 📊 وضعیت ذهن شما: `{state}`")
+    st.markdown(f"### 🔁 بازتاب هوش برتر: *{reflection}*")
